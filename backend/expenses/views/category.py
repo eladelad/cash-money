@@ -1,20 +1,9 @@
-from notes.models import *
-from notes.serializers import *
-from notes.permissions import *
-
-from app.models import *
-from app.serializers import *
-import hashlib
-import itertools
-
-import os
-import json
-import datetime
-from itertools import chain
+from expenses.models import *
+from expenses.serializers import *
+from expenses.permissions import *
 
 from django.core import serializers
 from django.utils import timezone
-from rest_framework.renderers import JSONRenderer
 
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -31,13 +20,8 @@ from django.db.models import Q
 
 from django.http import HttpResponse, HttpResponseForbidden
 from django.conf import settings
-from django.shortcuts import get_object_or_404, get_object_or_401
 
 from expenses.views.core import *
-
-from django.core.validators import validate_email
-from django.core.exceptions import ValidationError
-
 
 class Category(generics.ListCreateAPIView):
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
@@ -53,10 +37,11 @@ class SubCategory(generics.ListCreateAPIView):
 
     def get_queryset(self):
         if 'category' in self.kwargs:
-            return SubCategory.objects.filter(Q(Category=self.kwargs['category']), Q(user=None) | Q(user=self.request.user)).distinct()
+            return SubCategory.objects.filter(Q(category=self.kwargs['category']), Q(user=None) | Q(user=self.request.user)).distinct()
         else:
             return SubCategory.objects.filter(Q(user=None) | Q(user=self.request.user)).distinct()
-#
+
+
 # class addShareToBoard(APIView):
 #     """"adding share to board if hash is correct"""
 #     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
