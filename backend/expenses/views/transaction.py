@@ -23,7 +23,7 @@ from django.conf import settings
 
 from expenses.views.core import *
 
-class Transaction(generics.ListCreateAPIView):
+class TransactionList(generics.ListCreateAPIView):
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated, )
 

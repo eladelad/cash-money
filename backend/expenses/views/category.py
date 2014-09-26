@@ -23,7 +23,7 @@ from django.conf import settings
 
 from expenses.views.core import *
 
-class Category(generics.ListCreateAPIView):
+class CategoryList(generics.ListCreateAPIView):
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated, )
 
@@ -31,7 +31,7 @@ class Category(generics.ListCreateAPIView):
         return Category.objects.filter(Q(user=None) | Q(user=self.request.user)).distinct()
 
 
-class SubCategory(generics.ListCreateAPIView):
+class SubCategoryList(generics.ListCreateAPIView):
     authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated, )
 

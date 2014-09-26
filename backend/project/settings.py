@@ -85,7 +85,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admindocs',
     'django.contrib.admin',
-    'app',
     'taggit',
     'reversion',
     'expenses',

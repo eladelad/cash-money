@@ -4,13 +4,13 @@ from django.contrib.contenttypes.models import ContentType
 from taggit.managers import TaggableManager
 import reversion
 import uuid
-#from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save, pre_save, post_delete
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 from django.conf import settings
-from django.contrib.auth.models import AbstractUser
+#from django.contrib.auth.models import AbstractUser
 import datetime
 import re
 import ast
@@ -32,6 +32,23 @@ class GeneralObject(models.Model):
         return super(GeneralObject, self).save(*args, **kwargs)
 
 
+class IconClass(GeneralObject):
+    name = models.CharField(max_length=150)
+    icon = models.CharField(max_length=150)
+
+
+def content_file_path(instance, filename):
+    return '/'.join([str(instance.user.id), filename])
+
+
+class Attachment(GeneralObject):
+    user = models.ForeignKey(User, null=True)
+    file = models.FileField(upload_to=content_file_path)
+
+    def __unicode__(self):
+        return self.user.username + " " + self.file.name
+
+
 class Category(GeneralObject):
     name = models.CharField(max_length=500)
     icon_class = models.ForeignKey(IconClass)
@@ -43,10 +60,6 @@ class SubCategory(GeneralObject):
     category = models.ForeignKey(Category)
     icon_class = models.ForeignKey(IconClass)
     user = models.ForeignKey(User, null=True)
-
-class IconClass(GeneralObject):
-    name = models.CharField(max_length=150)
-    icon = models.CharField(max_length=150)
 
 
 class Account(GeneralObject):
@@ -70,16 +83,6 @@ class Transaction(GeneralObject):
     attachment = models.ForeignKey(Attachment)
 
 
-def content_file_path(instance, filename):
-    return '/'.join([str(instance.user.id), filename])
-
-
-class Attachment(GeneralObject):
-    user = models.ForeignKey(User, null=True)
-    file = models.FileField(upload_to=content_file_path)
-
-    def __unicode__(self):
-        return self.user.username + " " + self.file.name
 
 
 

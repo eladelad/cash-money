@@ -2,7 +2,7 @@ from django.conf.urls import patterns, url
 from expenses import views
 
 urlpatterns = patterns('',
-                       url(r'^$', views.getOrCreateBoard.as_view(), name='list-create-transaction'),
+                       url(r'^$', views.TransactionList.as_view(), name='list-create-transaction'),
                        )
 
 

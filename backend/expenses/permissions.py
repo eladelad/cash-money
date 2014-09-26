@@ -1,5 +1,4 @@
 from rest_framework import permissions
-from views.core import isPermittedToEdit, isPermittedToView
 
 class IsOwner(permissions.BasePermission):
     """
